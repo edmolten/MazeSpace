@@ -3,31 +3,31 @@ using System.Collections;
 
 public class ShipMovement : MonoBehaviour {
 
-
-	const float NORMAL_SPEED = 0.2f;
-	const float TURBO_SPEED = 0.3f;
-	const float NORMAL_ROTATION_SPEED = 6f;
-	const float TURBO_ROTATION_SPEED = 7f;
+	const float NORMAL_SPEED = 0.1f;
+	const float TURBO_SPEED = 0.2f;
+	const float NORMAL_ROTATION_SPEED = 5f;
+	const float TURBO_ROTATION_SPEED = 6f;
 
 	public float forwardSpeed;
 	public float rotationSpeed;
-	public Transform camera;
 	public Mode viewMode = Mode.BOTTOM;
+	Vector3 upRotation;
+	Vector3 downRotation;
 
 	void Start () {
-		camera = GameObject.Find ("GameCamera").transform;
 		forwardSpeed = NORMAL_SPEED;
 		rotationSpeed = NORMAL_ROTATION_SPEED;
+		upRotation = new Vector3 (0, 0, 90);
+		downRotation = new Vector3 (0, 0, -90);
 	}
 
 	void Update () {
-		//camera.RotateAround (transform.position, Vector3.right, 1);
 		checkTurbo ();
 		checkPlaneChange ();
 		checkRotation ();
 		moveForward ();
 	}
-
+		
 	void checkTurbo(){ 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			forwardSpeed = TURBO_SPEED;
@@ -39,15 +39,15 @@ public class ShipMovement : MonoBehaviour {
 	}
 
 	void checkPlaneChange(){
-		Vector3 upRotation = new Vector3 (0, 0, 90);
-		Vector3 downRotation = new Vector3 (0, 0, -90);
-		if (Input.GetKeyDown (KeyCode.LeftShift)) { //arriba
+		if (Input.GetKeyDown (KeyCode.LeftShift)) {
 			alignFront();
 			transform.Rotate (upRotation);
+			Transparenter.transparentBlocksOnTop (transform);
 		}
-		else if (Input.GetKeyDown (KeyCode.LeftControl)){ //abajo
+		else if (Input.GetKeyDown (KeyCode.LeftControl)){
 			alignFront();
 			transform.Rotate (downRotation);
+			Transparenter.transparentBlocksOnTop (transform);
 		}
 	}
 
