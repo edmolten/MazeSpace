@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Transparenter : MonoBehaviour
 {
@@ -18,16 +19,18 @@ public class Transparenter : MonoBehaviour
 			m = block.GetComponent<MeshRenderer> ().material;
 			c = m.color;
 			p = relativePosition(playerTransform, block.transform.position);
-			if (p.x > 1.7f) {
-				c.a = 0.2f;
+			Debug.Log (block.name);
+			Debug.Log (p);
+			if (p.x - playerTransform.position.x > 1.7) {
+				c.a = 0.1f;
 			} else {
-				c.a = 1.0f;
+				c.a = 1.0f; 
 			}
 			m.color = c;
 		}
 	}
 		
 	static private Vector3 relativePosition(Transform origin, Vector3 position) {
-		return origin.InverseTransformVector (position);
+		return origin.InverseTransformDirection (position);
 	}
 }
